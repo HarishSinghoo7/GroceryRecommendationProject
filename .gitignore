@@ -129,6 +129,5 @@ dmypy.json
 .pyre/
 
 .idea/
-ecommerce/config/config.ini
 ecommerce/logs/
 .flask_session
