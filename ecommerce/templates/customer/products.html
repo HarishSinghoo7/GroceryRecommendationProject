@@ -4,87 +4,90 @@
   <div class="col-xl-4 col-lg-4 col-md-6 col-xs-12">
     <div class="row">
       <div class="col-xs-12">
-        <img src="{{ url_for('static', filename='images/categories/fruits and vegetables.jpg') }}" alt="" class="img-responsive">
+        <img src="{{ response.product.product_image_path }}" alt="" class="img-responsive">
       </div>
     </div>
-    <div class="row">
-      {% for i in range(4) %}
-        <div class="img-thumb">
-          <div class="box-shadow">
-            <img src="{{ url_for('static', filename='images/categories/fruits and vegetables.jpg') }}" alt="" class="img-responsive">
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+<!--    <div class="row">-->
+<!--      {% for i in range(4) %}-->
+<!--        <div class="img-thumb">-->
+<!--          <div class="box-shadow">-->
+<!--            <img src="{{ url_for('static', filename='images/categories/fruits and vegetables.jpg') }}" alt="" class="img-responsive">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      {% endfor %}-->
+<!--    </div>-->
   </div>
   <div class="col-xl-8 col-lg-8 col-md-6 col-xs-12 product-data">
-    <div class="product-name h3">Product Name</div>
+    <div class="product-name h3">{{ response.product.product_name }}</div>
     <div class="product-price mt-10">
-      <span>M.R.P: <i class="fas fa-rupee-sign"></i> <strong>250</strong></span>
+      <span>M.R.P: &#8377; <strong>{{ response.product.product_price }}</strong></span>
       <span>(Inclusive of all taxes)</span>
     </div>
+    {% if response.product.product_qty and response.product.product_qty > 0 %}
     <div class="text-success mt-10"><strong>In Stock</strong></div>
-<!--    <div class="text-danger mt-10"><strong>Out Of Stock</strong></div>-->
-    <div class="mt-10 strong">Sold By <span class="retailer-name">Reliance Retailer</span></div>
+    {% else %}
+    <div class="text-danger mt-10"><strong>Out of Stock</strong></div>
+    {% endif %}
+<!--    <div class="mt-10 strong">Sold By <span class="retailer-name">Reliance Retailer</span></div>-->
 
     <div>
-      <button class="btn btn-cart btn-block">Add To Cart</button>
+      <button class="btn btn-cart btn-block" type="button" onclick="add_to_cart('{{response.product.product_id}}', '{{(auth and auth|length)}}')">Add To Cart</button>
     </div>
   </div>
 </div>
 <hr>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="h4 lnh-50"><strong>Description</strong></div>
-    <div class="product-description">
-      <h5><strong>Sweet Potato 500 g</strong></h5>
-      Potato is a root vegetable and the most versatile of all. It is widely used across Indian kitchens paired with numerous other vegetables for preparation of several delicacies. Be it Brinjal, Cauliflower, Tomato, Onion or be it Soyabean Chunks or the Spinach clan- Potatoes goes with all for delicious cuisines. Potatoes are rich in Carbohydrates, Dietary Fiber, Calcium and Iron. Buy Sweet Potato online now.
-    </div>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="h4 lnh-50"><strong>Features And Details</strong></div>
-    <div class="product-description">
-      <ul>
-        <li>Feature 1</li>
-        <li>Feature 2</li>
-      </ul>
-    </div>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="h4 lnh-50"><strong>Product Information</strong></div>
-    <div class="product-description table-responsive table-bordered table-stripped">
-      <table class="table">
-        <tr>
-          <th>Country of Origin</th>
-          <td>India</td>
-        </tr>
-        <tr>
-          <th>Product Type</th>
-          <td>
-            <div class="veg-icon"><div class="veg-circle"></div></div>
-<!--            <div class="non-veg-icon"><div class="non-veg-circle"></div></div>-->
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="h4 lnh-50"><strong>Disclaimer</strong></div>
-    <div class="product-description">
-      Despite our attempts to provide you with the most accurate information possible, the actual packaging, ingredients and colour of the product may sometimes vary. Please read the label, directions and warnings carefully before use.
-    </div>
-  </div>
-</div>
-<hr>
+<!--<div class="row">-->
+<!--  <div class="col-xs-12">-->
+<!--    <div class="h4 lnh-50"><strong>Description</strong></div>-->
+<!--    <div class="product-description">-->
+<!--      <h5><strong>Sweet Potato 500 g</strong></h5>-->
+<!--      Potato is a root vegetable and the most versatile of all. It is widely used across Indian kitchens paired with numerous other vegetables for preparation of several delicacies. Be it Brinjal, Cauliflower, Tomato, Onion or be it Soyabean Chunks or the Spinach clan- Potatoes goes with all for delicious cuisines. Potatoes are rich in Carbohydrates, Dietary Fiber, Calcium and Iron. Buy Sweet Potato online now.-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<hr>-->
+<!--<div class="row">-->
+<!--  <div class="col-xs-12">-->
+<!--    <div class="h4 lnh-50"><strong>Features And Details</strong></div>-->
+<!--    <div class="product-description">-->
+<!--      <ul>-->
+<!--        <li>Feature 1</li>-->
+<!--        <li>Feature 2</li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<hr>-->
+<!--<div class="row">-->
+<!--  <div class="col-xs-12">-->
+<!--    <div class="h4 lnh-50"><strong>Product Information</strong></div>-->
+<!--    <div class="product-description table-responsive table-bordered table-stripped">-->
+<!--      <table class="table">-->
+<!--        <tr>-->
+<!--          <th>Country of Origin</th>-->
+<!--          <td>India</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <th>Product Type</th>-->
+<!--          <td>-->
+<!--            <div class="veg-icon"><div class="veg-circle"></div></div>-->
+<!--&lt;!&ndash;            <div class="non-veg-icon"><div class="non-veg-circle"></div></div>&ndash;&gt;-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--      </table>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<hr>-->
+<!--<div class="row">-->
+<!--  <div class="col-xs-12">-->
+<!--    <div class="h4 lnh-50"><strong>Disclaimer</strong></div>-->
+<!--    <div class="product-description">-->
+<!--      Despite our attempts to provide you with the most accurate information possible, the actual packaging, ingredients and colour of the product may sometimes vary. Please read the label, directions and warnings carefully before use.-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<hr>-->
 <div class="row">
   <div class="col-lg-4 col-xl-4 col-md-5 col-xs-12">
     <div class="h4 lnh-50"><strong>Product Rating</strong></div>

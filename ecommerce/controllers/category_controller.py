@@ -6,11 +6,34 @@ class CategoryController(Controller):
         self.category = Category()
 
     def index(self):
-        categories = self.category.find()
-        for category in categories:
-            print(category)
-        return categories
+        """
+        Description: Will fetch categories in hierarchical order
+        :return: list of categories
+        """
+        return self.category.aggregate([
+            {
+                "$match": {"parent_category_id": None}
+            },
+            {
+                "$lookup":
+                    {
+                        "from": 'Product_Category',
+                        "localField": 'product_category_id',
+                        "foreignField": 'parent_category_id',
+                        "as": 'child_categories'
+                    }
+            }
+        ])
 
     def top_3_categories(self):
-        categories = self.category.aggregate([{'$limit': 3}])
-        return categories
+        """
+        Description: Will fetch 3 categories from database
+        :return: list of categories
+        """
+        return self.category.aggregate([
+                {"$match": {"parent_category_id": {"$ne": None}}},
+                {"$limit": 3}
+             ])
+
+    def find_by_id(self, category_id):
+        return self.category.aggregate([{"$match":{'product_category_id': category_id}}])[0]

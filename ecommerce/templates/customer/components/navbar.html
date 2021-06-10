@@ -1,5 +1,5 @@
 <nav class="navbar navbar-main navbar-default" role="navigation" style="opacity: 1;">
-  <div class="container">
+  <div class="container-fluid">
     <!-- Brand and toggle -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-1">
@@ -14,31 +14,16 @@
     <div class="collapse navbar-collapse navbar-1" style="margin-top: 0px;">
       <ul class="nav navbar-nav">
         <li><a href="{{ url_for('home') }}" data-hover="dropdown" data-close-others="false">Home</a></li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">Fruits & Vegetables <i class="fa fa-angle-down ml-5"></i></a>
-          <ul class="dropdown-menu dropdown-menu-left">
-            <li><a href="{{ url_for('categories', category='fresh-fruits') }}" class="nav-hover">Fresh Fruits</a></li>
-            <li><a href="{{ url_for('categories', category='fresh-vegetables') }}" class="nav-hover">Fresh Vegetables</a></li>
-            <li><a href="{{ url_for('categories', category='herbs-seasonings') }}" class="nav-hover">Herbs & Seasonings</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">Dairy & Bakery <i class="fa fa-angle-down ml-5"></i></a>
-          <ul class="dropdown-menu dropdown-menu-left">
-            <li><a href="{{ url_for('categories', category='dairy') }}" class="nav-hover">Dairy</a></li>
-            <li><a href="{{ url_for('categories', category='bread-buns') }}" class="nav-hover">Bread & Buns</a></li>
-            <li><a href="{{ url_for('categories', category='cheese') }}" class="nav-hover">Cheese</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">Snacks <i class="fa fa-angle-down ml-5"></i></a>
-          <ul class="dropdown-menu dropdown-menu-left">
-            <li><a href="{{ url_for('categories', category='biscuits-cookies') }}" class="nav-hover">Biscuits & Cookies</a></li>
-            <li><a href="{{ url_for('categories', category='namkeens') }}" class="nav-hover">Namkeens</a></li>
-            <li><a href="{{ url_for('categories', category='chocolates') }}" class="nav-hover">Chocolates</a></li>
-          </ul>
-        </li>
+        {% for cat in categories %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">{{ cat.product_category_name }} <i class="fa fa-angle-down ml-5"></i></a>
+            <ul class="dropdown-menu dropdown-menu-left">
+              {% for sub_cat in cat.child_categories %}
+                <li><a href="{{ url_for('categories', category_id=sub_cat.product_category_id) }}" class="nav-hover">{{ sub_cat.product_category_name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endfor %}
       </ul>
     </div><!-- /.navbar-collapse -->
   </div>

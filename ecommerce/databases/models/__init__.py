@@ -1,4 +1,5 @@
 from ecommerce.databases import DBConnection
+from bson.objectid import ObjectId
 
 
 class Model(DBConnection):
@@ -32,7 +33,7 @@ class Model(DBConnection):
         except Exception as e:
             self.log("Error: "+str(e))
 
-    def find(self, select: dict = {}):
+    def find(self, cond: dict = {}, select: dict = {}):
         """
         Description: Fetch data from collection
         :param select: dictionary with collection field name and (0/1) value 0 means don't select the field
@@ -40,9 +41,9 @@ class Model(DBConnection):
         """
         try:
             if select:
-                return self.collection.find({}, select)
+                return self.collection.find(cond, select)
             else:
-                return self.collection.find({}, self.__select_dict())
+                return self.collection.find(cond, self.__select_dict())
         except Exception as e:
             self.log("Error: "+str(e))
 
@@ -58,15 +59,21 @@ class Model(DBConnection):
         except Exception as e:
             self.log("Error: "+str(e))
 
+    def delete_by_id(self, id):
+        try:
+            return self.collection.delete_one({"_id": ObjectId(id)})
+        except Exception as e:
+            self.log("Error: "+str(e))
+
     def delete(self, query: dict = {}):
         try:
-            return list(self.collection.delete_one(query))
+            return self.collection.delete_one(query)
         except Exception as e:
             self.log("Error: "+str(e))
 
     def delete_many(self, query: dict = {}):
         try:
-            return list(self.collection.delete_many(query))
+            return self.collection.delete_many(query)
         except Exception as e:
             self.log("Error: "+str(e))
 

@@ -1,0 +1,15 @@
+{% extends "customer/layout.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-xs-12 h3">
+        Thankyou we have successfully received your order for
+    </div>
+    <div class="col-xs-12">
+        <ol>
+            {% for pro in response.order.product %}
+            <li>{{ pro.product_name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endblock %}

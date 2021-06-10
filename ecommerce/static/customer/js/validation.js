@@ -17,8 +17,7 @@
      rules: {
 
        email: {
-         required: true,
-         email: true
+         required: true
        },
        password: {
          required: true,
@@ -30,7 +29,6 @@
 
        password: {
          required: "Please enter password",
-
        }
 
      },
@@ -43,8 +41,8 @@
 $(function() {
   $("form[name='registration']").validate({
     rules: {
-      firstname: "required",
-      lastname: "required",
+      name: "required",
+      phone: "required",
       email: {
         required: true,
         email: true
@@ -56,8 +54,8 @@ $(function() {
     },
 
     messages: {
-      firstname: "Please enter your firstname",
-      lastname: "Please enter your lastname",
+      name: "Please enter your name",
+      phone: "Please enter your phone number",
       password: {
         required: "Please provide a password",
         minlength: "Your password must be at least 5 characters long"
