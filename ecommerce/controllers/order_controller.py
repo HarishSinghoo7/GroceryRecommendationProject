@@ -14,6 +14,12 @@ class OrderController(Controller):
         self.cart = CartController()
 
     def insert(self, customer_id):
+        """
+        Description: Creating new order
+        :parameter
+        @customer_id: Authenticated customer id
+        :return: order_id
+        """
         order_id = str(''.join(random.choices(string.ascii_lowercase + string.digits, k=32)))
         self.order.create({
             'order_id': order_id,
@@ -37,6 +43,12 @@ class OrderController(Controller):
 
 
     def get(self, order_id):
+        """
+        Description: Fetching order details
+        :parameter
+        @order_id: order id
+        :return: order details
+        """
         return self.order.aggregate([
             {"$match": {"order_id": order_id}},
             {"$lookup": {
@@ -51,4 +63,4 @@ class OrderController(Controller):
                 "foreignField": 'product_id',
                 "as": 'product'
             }}
-        ])[0]
+        ])

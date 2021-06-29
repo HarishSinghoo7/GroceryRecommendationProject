@@ -1,31 +1,56 @@
 <div class="category-listing mb-50">
 
     <div class="single-listing">
-        <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">
-            <div class="select-Categories">
-                <div class="small-tittle h4 mb-20">
-                    <h4>Availability</h4>
-                </div>
-                <label class="container">InStock Products
-                    <input type="checkbox" class='filter-checkbox'>
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-        </aside>
+        <form method="get">
+            <!-- Hidden Fields For Search Page -->
 
-        <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">
-            <div class="small-tittle h4">
-                <h4>Filter by Price</h4>
-            </div>
-            <div class="widgets_inner wrapper">
-                <div class="range-slider">
-                    <input type="text" class="js-range-slider" value="" />
+            {% if title == 'Search' %}
+                <input type="hidden" name="keyword" value="{{ response.qparams.keyword }}">
+                <input type="hidden" name="category" value="{{ response.qparams.category }}">
+            {% endif %}
+            <!-- / Hidden Fields For Search Page -->
+            <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">
+                <div class="select-Categories">
+                    <div class="small-tittle h4 mb-20">
+                        <h4>Availability</h4>
+                    </div>
+                    <label class="container">InStock Products
+                        {% if response.qparams and response.qparams.instock %}
+                            <input type="checkbox" name="instock" checked class='filter-checkbox'>
+                        {% else %}
+                            <input type="checkbox" name="instock" class='filter-checkbox'>
+                        {% endif %}
+                        <span class="checkmark"></span>
+                    </label>
                 </div>
-                <div class="form-inline text-center">
-                    <input type="text" class="js-input-from text-right" value="0" readonly/> To <input type="text" class="js-input-to" value="0" readonly/>
+            </aside>
+
+            <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">
+                <div class="small-tittle h4">
+                    <h4>Filter by Price</h4>
                 </div>
-            </div>
-        </aside>
+                <div class="widgets_inner wrapper">
+                    <div class="range-slider">
+                        <input type="text" class="js-range-slider" value="" />
+                    </div>
+                    <div class="form-inline text-center">
+                        {% if response.qparams and response.qparams.min_price %}
+                            <input type="text" class="js-input-from text-right" value="{{response.qparams.min_price}}" name="min_price" readonly/> To
+                        {% else %}
+                            <input type="text" class="js-input-from text-right" value="0" name="min_price" readonly/> To
+                        {% endif %}
+                        {% if response.qparams and response.qparams.max_price %}
+                            <input type="text" class="js-input-to" value="{{response.qparams.max_price}}" name="max_price" readonly/>
+                        {% else %}
+                            <input type="text" class="js-input-to" value="5000" name="max_price" readonly/>
+                        {% endif %}
+                    </div>
+                </div>
+            </aside>
+            <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">
+                <button class="btn btn-cart btn-block">Filter</button>
+            </aside>
+        </form>
 
 <!--        <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">-->
 <!--            <div class="select-Categories">-->
@@ -78,44 +103,16 @@
 </div>
 
 <script>
-    (function() {
-    const parent = document.querySelector('.range-slider');
-
-    if (!parent) {
-        return;
+$(".js-range-slider").ionRangeSlider({
+    skin: "big",
+    type: "double",
+    min: 0,
+    max: 5000,
+    from: $('.js-input-from').val(),
+    to: $('.js-input-to').val(),
+    onChange: function (data) {
+        $('.js-input-from').val(data.from)
+        $('.js-input-to').val(data.to)
     }
-
-    const rangeS = parent.querySelectorAll('input[type="range"]'),
-          numberS = parent.querySelectorAll('input[type="number"]');
-
-    rangeS.forEach((el) => {
-        el.oninput = () => {
-            let slide1 = parseFloat(rangeS[0].value),
-                slide2 = parseFloat(rangeS[1].value);
-
-            if (slide1 > slide2) {
-                [slide1, slide2] = [slide2, slide1];
-            }
-
-            numberS[0].value = slide1;
-            numberS[1].value = slide2;
-        }
-    });
-
-    numberS.forEach((el) => {
-        el.oninput = () => {
-            let number1 = parseFloat(numberS[0].value),
-                number2 = parseFloat(numberS[1].value);
-
-            if (number1 > number2) {
-                let tmp = number1;
-                numberS[0].value = number2;
-                numberS[1].value = tmp;
-            }
-
-            rangeS[0].value = number1;
-            rangeS[1].value = number2;
-        }
-    });
-})();
+});
 </script>

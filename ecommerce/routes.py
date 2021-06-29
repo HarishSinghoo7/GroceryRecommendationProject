@@ -62,12 +62,14 @@ def register():
             return render_template_with_nav('customer/auth/registration.html', title='Registration')
 
 
-
 @app.route('/categories/<category_id>')
 def categories(category_id):
     category = CategoryController().find_by_id(category_id)
-    products = ProductController().product_by_category_id(category_id)
-    return render_template_with_nav('customer/categories.html', title=category['product_category_name'], showPageBanner=True, response={'products': products, 'category': category})
+    products = ProductController().product_by_category_id(category_id, request)
+    params = {}
+    for param in request.args:
+        params[param] = request.args[param]
+    return render_template_with_nav('customer/categories.html', title=category['product_category_name'], showPageBanner=True, response={'products': products, 'category': category, 'qparams': params})
 
 
 @app.route('/products/<product_id>')
@@ -96,21 +98,26 @@ def checkout():
         return redirect('/thankyou/'+order_id)
 
 
-
 @app.route('/search')
 def search():
     products = ProductController().search_products(request)
-    return render_template_with_nav('customer/search.html', title='Search', response={"products": products})
+    params = {}
+    for param in request.args:
+        params[param] = request.args[param]
+    return render_template_with_nav('customer/search.html', title='Search', response={"products": products, "qparams": params})
+
 
 @app.route('/logout')
 def logout():
     session['auth'] = None
     return redirect('/')
 
+
 @app.route('/remove-cart', methods=["POST"])
 def remove_cart():
     CartController().remove(request.form['id'])
     return jsonify({"msg": 'success'})
+
 
 @app.route('/thankyou/<order_id>')
 def thankyou(order_id):

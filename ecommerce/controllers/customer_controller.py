@@ -11,12 +11,20 @@ class CustomerController(Controller):
         self.user_detail = UserDetail()
 
     def index(self):
+        """
+        Description: Fetch the list of customers
+        :return: list of customers
+        """
         customers = self.customer.find()
-        for customer in customers:
-            print(customer)
         return customers
 
     def login(self, form_param):
+        """
+        Description: Authenticate user credentials
+        :parameter:
+        @form_param: Login form values username and password
+        :return: customer detail
+        """
         email = form_param['email']
         password = form_param['password']
         customer_detial = self.user_detail.aggregate([
@@ -36,6 +44,12 @@ class CustomerController(Controller):
             return False
 
     def register(self, form_param):
+        """
+        Description: Register new customer
+        :parameter:
+        @form_param: Registration form data
+        :return: customer data
+        """
         name = form_param['name']
         email = form_param['email']
         phone = form_param['phone']

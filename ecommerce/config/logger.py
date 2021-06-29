@@ -15,8 +15,9 @@ class AppLogger(ConfigReader):
     def log(self, log_message: str, log_path: str = ''):
         """
         Description: This method writes application logs
-        :param log_message: log message
-        :param log_path: path where the log file is present
+        :parameter
+         @log_message: log message
+         @log_path: path where the log file is present
         :return: Null
         """
 
@@ -33,6 +34,12 @@ class AppLogger(ConfigReader):
         file_object.write(str(date) + "/" + str(current_time) + "\t\t" + log_message +"\n")
 
     def create_log_path(self, path):
+        """
+        Description: This method create directory based on the passed path
+        :parameter
+         @path: path of directory
+        :return: Null
+        """
         path_arr = path.split('/')
         if len(path_arr) > 1:
             init_path = ''

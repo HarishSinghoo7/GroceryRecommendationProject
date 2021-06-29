@@ -1054,3 +1054,7 @@ user-cart .btn-link{
 }
 /* End carousel */
  /*---------------------END Product Recommend Carousel----------------------------------*/
+
+.irs-min, .irs-max {
+    display: none
+}

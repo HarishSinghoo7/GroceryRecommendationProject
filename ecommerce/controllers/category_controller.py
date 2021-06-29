@@ -36,4 +36,8 @@ class CategoryController(Controller):
              ])
 
     def find_by_id(self, category_id):
+        """
+        Description: Find category based on category_id
+        :return: Category data
+        """
         return self.category.aggregate([{"$match":{'product_category_id': category_id}}])[0]
