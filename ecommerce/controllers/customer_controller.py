@@ -15,8 +15,11 @@ class CustomerController(Controller):
         Description: Fetch the list of customers
         :return: list of customers
         """
-        customers = self.customer.find()
-        return customers
+        try:
+            customers = self.customer.find()
+            return customers
+        except Exception as e:
+            self.log("Error: "+str(e))
 
     def login(self, form_param):
         """
@@ -25,23 +28,26 @@ class CustomerController(Controller):
         @form_param: Login form values username and password
         :return: customer detail
         """
-        email = form_param['email']
-        password = form_param['password']
-        customer_detial = self.user_detail.aggregate([
-            {"$match": {"User_Id": email, "password": password}},
-            {"$lookup":
-                {
-                    "from": 'Customer',
-                    "localField": 'customer_id',
-                    "foreignField": 'customer_id',
-                    "as": 'customer'
+        try:
+            email = form_param['email']
+            password = form_param['password']
+            customer_detial = self.user_detail.aggregate([
+                {"$match": {"User_Id": email, "password": password}},
+                {"$lookup":
+                    {
+                        "from": 'Customer',
+                        "localField": 'customer_id',
+                        "foreignField": 'customer_id',
+                        "as": 'customer'
+                    }
                 }
-            }
-        ])
-        if customer_detial:
-            return customer_detial[0]['customer']
-        else:
-            return False
+            ])
+            if customer_detial:
+                return customer_detial[0]['customer']
+            else:
+                return False
+        except Exception as e:
+            self.log("Error: "+str(e))
 
     def register(self, form_param):
         """
@@ -50,21 +56,24 @@ class CustomerController(Controller):
         @form_param: Registration form data
         :return: customer data
         """
-        name = form_param['name']
-        email = form_param['email']
-        phone = form_param['phone']
-        password = form_param['password']
-        customer_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
+        try:
+            name = form_param['name']
+            email = form_param['email']
+            phone = form_param['phone']
+            password = form_param['password']
+            customer_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
 
-        self.customer.create({
-            "customer_id": customer_id,
-            "customer name": name,
-            "phone": phone,
-        })
-        self.user_detail.create({
-            "User_Id": email,
-            "customer_id": customer_id,
-            "password": password
-        })
+            self.customer.create({
+                "customer_id": customer_id,
+                "customer name": name,
+                "phone": phone,
+            })
+            self.user_detail.create({
+                "User_Id": email,
+                "customer_id": customer_id,
+                "password": password
+            })
 
-        return self.customer.aggregate([{"$match":{'customer_id': customer_id}}])
+            return self.customer.aggregate([{"$match":{'customer_id': customer_id}}])
+        except Exception as e:
+            self.log("Error: "+str(e))

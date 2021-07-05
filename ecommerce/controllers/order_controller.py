@@ -20,26 +20,29 @@ class OrderController(Controller):
         @customer_id: Authenticated customer id
         :return: order_id
         """
-        order_id = str(''.join(random.choices(string.ascii_lowercase + string.digits, k=32)))
-        self.order.create({
-            'order_id': order_id,
-            'customer_id': customer_id,
-            'order_status': 'Pending',
-            'order_purchase_timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        })
-
-        cart = self.cart.get(customer_id)
-        order_items = []
-        for pro in cart:
-            order_items.append({
+        try:
+            order_id = str(''.join(random.choices(string.ascii_lowercase + string.digits, k=32)))
+            self.order.create({
                 'order_id': order_id,
-                'product_id': pro['product'][0]['product_id'],
-                'product_price': pro['product'][0]['product_price']
+                'customer_id': customer_id,
+                'order_status': 'Pending',
+                'order_purchase_timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
 
-        self.order_item.create_multiple(order_items)
-        self.cart.delete_where({"customer_id": customer_id})
-        return order_id
+            cart = self.cart.get(customer_id)
+            order_items = []
+            for pro in cart:
+                order_items.append({
+                    'order_id': order_id,
+                    'product_id': pro['product'][0]['product_id'],
+                    'product_price': pro['product'][0]['product_price']
+                })
+
+            self.order_item.create_multiple(order_items)
+            self.cart.delete_where({"customer_id": customer_id})
+            return order_id
+        except Exception as e:
+            self.log("Error: "+str(e))
 
 
     def get(self, order_id):
@@ -49,18 +52,21 @@ class OrderController(Controller):
         @order_id: order id
         :return: order details
         """
-        return self.order.aggregate([
-            {"$match": {"order_id": order_id}},
-            {"$lookup": {
-                "from": 'Order_Item',
-                "localField": 'order_id',
-                "foreignField": 'order_id',
-                "as": 'order_items'
-            }},
-            {"$lookup": {
-                "from": 'Product',
-                "localField": 'order_items.product_id',
-                "foreignField": 'product_id',
-                "as": 'product'
-            }}
-        ])
+        try:
+            return self.order.aggregate([
+                {"$match": {"order_id": order_id}},
+                {"$lookup": {
+                    "from": 'Order_Item',
+                    "localField": 'order_id',
+                    "foreignField": 'order_id',
+                    "as": 'order_items'
+                }},
+                {"$lookup": {
+                    "from": 'Product',
+                    "localField": 'order_items.product_id',
+                    "foreignField": 'product_id',
+                    "as": 'product'
+                }}
+            ])
+        except Exception as e:
+            self.log("Error: "+str(e))

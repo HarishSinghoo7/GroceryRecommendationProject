@@ -9,7 +9,7 @@ class Model(DBConnection):
             self.collection = self.db[collection]
             self.hidden_fields = {}
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def create(self, data: dict):
         """
@@ -20,7 +20,7 @@ class Model(DBConnection):
         try:
             return list(self.collection.insert_one(data))
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def create_multiple(self, data: list):
         """
@@ -31,7 +31,7 @@ class Model(DBConnection):
         try:
             return list(self.collection.insert_many(data))
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def find(self, cond: dict = {}, select: dict = {}):
         """
@@ -45,37 +45,37 @@ class Model(DBConnection):
             else:
                 return self.collection.find(cond, self.__select_dict())
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def aggregate(self, cond: list):
         try:
             return list(self.collection.aggregate(cond))
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def query(self, query: dict = {}):
         try:
             return list(self.collection.find(query))
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def delete_by_id(self, id):
         try:
             return self.collection.delete_one({"_id": ObjectId(id)})
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def delete(self, query: dict = {}):
         try:
             return self.collection.delete_one(query)
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
     def delete_many(self, query: dict = {}):
         try:
             return self.collection.delete_many(query)
         except Exception as e:
-            self.log("Error: "+str(e))
+            raise Exception()
 
 
     def __select_dict(self):
