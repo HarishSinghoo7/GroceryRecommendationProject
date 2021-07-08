@@ -7,6 +7,7 @@ import random
 
 class CustomerController(Controller):
     def __init__(self):
+        super(CustomerController, self).__init__()
         self.customer = Customer()
         self.user_detail = UserDetail()
 

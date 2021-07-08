@@ -30,27 +30,29 @@
         </div>
 
         <!--Product Recommendations Based On Search History-->
+        {% if response.recommends %}
         <hr>
         <div class="row">
             <div class="col-xs-12">
-                <div class="h4"><strong>Inspired By Your Browsing History</strong></div>
+                <div class="h4"><strong>Recommendation</strong></div>
                 <div class="recommend-products">
                     {% include 'customer/components/recommend-products.html' %}
                 </div>
             </div>
         </div>
+        {% endif %}
         <!--/Product Recommendations Based On Search History-->
 
         <!--Product Recommendations Based On Search History-->
-        <hr>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="h4"><strong>Inspired By Your Purchase History</strong></div>
-                <div class="recommend-products">
-                    {% include 'customer/components/recommend-products.html' %}
-                </div>
-            </div>
-        </div>
+<!--        <hr>-->
+<!--        <div class="row">-->
+<!--            <div class="col-xs-12">-->
+<!--                <div class="h4"><strong>Inspired By Your Purchase History</strong></div>-->
+<!--                <div class="recommend-products">-->
+<!--                    {% include 'customer/components/recommend-products.html' %}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--/Product Recommendations Based On Search History-->
 
     </div>

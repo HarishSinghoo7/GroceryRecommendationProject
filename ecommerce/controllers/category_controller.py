@@ -3,6 +3,7 @@ from ecommerce.databases.models.category import Category
 
 class CategoryController(Controller):
     def __init__(self):
+        super(CategoryController, self).__init__()
         self.category = Category()
 
     def index(self):

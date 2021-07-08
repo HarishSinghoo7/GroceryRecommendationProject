@@ -9,7 +9,7 @@ class Model(DBConnection):
             self.collection = self.db[collection]
             self.hidden_fields = {}
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def create(self, data: dict):
         """
@@ -18,9 +18,9 @@ class Model(DBConnection):
         :return: data add response
         """
         try:
-            return list(self.collection.insert_one(data))
+            return self.collection.insert_one(data)
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def create_multiple(self, data: list):
         """
@@ -29,9 +29,9 @@ class Model(DBConnection):
         :return: data add response
         """
         try:
-            return list(self.collection.insert_many(data))
+            return self.collection.insert_many(data)
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def find(self, cond: dict = {}, select: dict = {}):
         """
@@ -45,37 +45,37 @@ class Model(DBConnection):
             else:
                 return self.collection.find(cond, self.__select_dict())
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def aggregate(self, cond: list):
         try:
             return list(self.collection.aggregate(cond))
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def query(self, query: dict = {}):
         try:
             return list(self.collection.find(query))
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def delete_by_id(self, id):
         try:
             return self.collection.delete_one({"_id": ObjectId(id)})
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def delete(self, query: dict = {}):
         try:
             return self.collection.delete_one(query)
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
     def delete_many(self, query: dict = {}):
         try:
             return self.collection.delete_many(query)
         except Exception as e:
-            raise Exception()
+            raise Exception(e)
 
 
     def __select_dict(self):

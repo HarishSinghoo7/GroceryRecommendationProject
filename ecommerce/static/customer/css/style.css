@@ -482,8 +482,13 @@ div[class^="col-"] {
 
 .products-card .card{
     border: solid 1px #ddd;
-    height: 280px;
+    height: 100%;
     margin-top: 30px;
+    padding-bottom: 20px;
+}
+
+.recommend-products .products-card .card{
+    margin-top: 0px;
 }
 
 .products-card .card img{
@@ -1049,8 +1054,8 @@ user-cart .btn-link{
 }
 .recommend-products .media-carousel img
 {
-  width: 250px;
-  height: 100px
+  /*width: 250px;*/
+  /*height: 100px*/
 }
 /* End carousel */
  /*---------------------END Product Recommend Carousel----------------------------------*/

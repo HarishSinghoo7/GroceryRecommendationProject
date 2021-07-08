@@ -5,6 +5,11 @@ from ecommerce.controllers.category_controller import CategoryController
 from ecommerce.controllers.product_controller import ProductController
 from ecommerce.controllers.cart_controller import CartController
 from ecommerce.controllers.order_controller import OrderController
+from recommender.recommendation_main import recommendation
+
+def get_item_based_recommendations(product_id):
+    recommend = recommendation()
+    return recommend.getProductRecommendation(product_id)
 
 def render_template_with_nav(html_page, **kwargs):
     categories = CategoryController().index()
@@ -75,7 +80,9 @@ def categories(category_id):
 @app.route('/products/<product_id>')
 def products(product_id):
     product = ProductController().find_by_id(product_id)
-    return render_template_with_nav('customer/products.html', title=product['product_name'], response={'product': product})
+    if product:
+        recommends = get_item_based_recommendations(product['product_id'])
+    return render_template_with_nav('customer/products.html', title=product['product_name'], response={'product': product, "recommends": recommends})
 
 
 @app.route('/cart', methods=["GET", "POST"])
@@ -104,7 +111,10 @@ def search():
     params = {}
     for param in request.args:
         params[param] = request.args[param]
-    return render_template_with_nav('customer/search.html', title='Search', response={"products": products, "qparams": params})
+    recommends = []
+    if products:
+        recommends = get_item_based_recommendations(products[0]['product_id'])
+    return render_template_with_nav('customer/search.html', title='Search', response={"products": products, "recommends": recommends, "qparams": params})
 
 
 @app.route('/logout')
@@ -122,4 +132,16 @@ def remove_cart():
 @app.route('/thankyou/<order_id>')
 def thankyou(order_id):
     order = OrderController().get(order_id)
-    return render_template_with_nav('customer/thankyou.html', title=thankyou, response={"order": order})
+    return render_template_with_nav('customer/thankyou.html', title="thankyou", response={"order": order})
+
+
+@app.route('/customer-orders/<customer_id>')
+def customer_orders(customer_id):
+    orders = OrderController().get_customer_order(customer_id)
+    return render_template_with_nav('customer/order_history.html', title="Your Orders", response={"orders": orders})
+
+
+@app.route('/retrain-model')
+def retrain_model():
+    recommendation().trainingRecommendationEngine()
+    return "Training Complete"

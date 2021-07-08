@@ -18,6 +18,8 @@
                         <li class="divider"></li>
                         <!--                    <li><a href="wishlist.html">Wishlist (5)</a>-->
                         <!--                    </li>-->
+                        <li><a href="{{ url_for('customer_orders', customer_id=auth[0]['customer_id']) }}">Orders</a>
+                        </li>
                         <li><a href="{{ url_for('cart') }}">My Cart</a>
                         </li>
                         <li><a href="{{ url_for('checkout') }}">Checkout</a>

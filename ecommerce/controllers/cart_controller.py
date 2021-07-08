@@ -4,6 +4,7 @@ import datetime
 
 class CartController(Controller):
     def __init__(self):
+        super(CartController, self).__init__()
         self.cart = Cart()
 
     def insert(self, form_data):

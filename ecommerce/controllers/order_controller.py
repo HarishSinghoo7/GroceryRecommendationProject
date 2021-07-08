@@ -9,6 +9,7 @@ import datetime
 
 class OrderController(Controller):
     def __init__(self):
+        super(OrderController, self).__init__()
         self.order = Order()
         self.order_item = OrderItem()
         self.cart = CartController()
@@ -55,6 +56,32 @@ class OrderController(Controller):
         try:
             return self.order.aggregate([
                 {"$match": {"order_id": order_id}},
+                {"$lookup": {
+                    "from": 'Order_Item',
+                    "localField": 'order_id',
+                    "foreignField": 'order_id',
+                    "as": 'order_items'
+                }},
+                {"$lookup": {
+                    "from": 'Product',
+                    "localField": 'order_items.product_id',
+                    "foreignField": 'product_id',
+                    "as": 'product'
+                }}
+            ])
+        except Exception as e:
+            self.log("Error: "+str(e))
+
+    def get_customer_order(self, customer_id):
+        """
+        Description: Fetching order details
+        :parameter
+        @customer_id: customer id
+        :return: order details
+        """
+        try:
+            return self.order.aggregate([
+                {"$match": {"customer_id": customer_id}},
                 {"$lookup": {
                     "from": 'Order_Item',
                     "localField": 'order_id',

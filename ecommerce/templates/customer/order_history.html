@@ -1,0 +1,36 @@
+{% extends "customer/layout.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-xs-12 table-responsive">
+        {% if response.orders %}
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Order Id</th>
+                <th>Items</th>
+                <th>Purchased at</th>
+                <th>Total Amount</th>
+            </tr>
+            {% for order in response.orders %}
+                <tr>
+                    <td>{{ order.order_id }}</td>
+                    <td>
+                        <ol>
+                            {% set total_amount =  {'amount': 0} %}
+                            {% for pro in order.product %}
+                                <li>{{ pro.product_name }}</li>
+                            {% if total_amount.update({'amount': total_amount['amount'] + pro.product_price|int}) %}{% endif %}
+                            {% endfor %}
+                        </ol>
+                    </td>
+                    <td>{{ order.order_purchase_timestamp }}</td>
+                    <td>{{ total_amount['amount'] }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+        {% else %}
+        <div class="text-primary h3 text-center">You haven't ordered anything yet.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

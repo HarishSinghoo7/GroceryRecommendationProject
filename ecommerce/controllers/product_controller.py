@@ -3,6 +3,7 @@ from ecommerce.databases.models.product import Product
 
 class ProductController(Controller):
     def __init__(self):
+        super(ProductController, self).__init__()
         self.product = Product()
 
     def index(self):

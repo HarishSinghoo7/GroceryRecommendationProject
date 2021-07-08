@@ -1,55 +1,33 @@
-<div class='row recommend-products'>
+<div class='row products-card'>
   <div class='col-md-12'>
     <div class="carousel slide media-carousel" id="media">
       <div class="carousel-inner">
-        <div class="item  active">
-          <div class="row">
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
+        {% if response.recommends %}
+          {% for i in range((response.recommends | length)//4 if (response.recommends | length)%4==0 else ((response.recommends | length)//4)+1 ) %}
+          <div class="item {{ 'active' if i == 0 }}">
+            {% for prod in response.recommends[i*4 : [i*4+4, response.recommends | length] | min] %}
+              {% for product in prod.values() %}
+                <div class="col-xl-3 col-lg-3 col-md-6 col-xs-12">
+                  <div class="card">
+                    <a href="{{ url_for('products', product_id=product.product_id) }}">
+                      <img src="{{ product.product_image_path }}" alt="" class="img-responsive">
+                      <div class="card-title pl-20 pr-20 pt-5">
+                        {{ product.product_name }}
+                      </div>
+                      <div class="card-text pl-20 pr-20 pt-5">
+                        &#8377; {{ product.product_price }}
+                      </div>
+                    </a>
+                    <div class="pl-20 pr-20 mt-10">
+                      <button class="btn btn-cart btn-block" onclick="add_to_cart('{{product.product_id}}', '{{(auth and auth|length)}}')">Add To Cart</button>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endfor %}
           </div>
-        </div>
-        <div class="item">
-          <div class="row">
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="row">
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-            <div class="col-md-3">
-              <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-            </div>
-          </div>
-        </div>
+          {% endfor %}
+        {% endif %}
       </div>
       <a data-slide="prev" href="#media" class="left carousel-control">‹</a>
       <a data-slide="next" href="#media" class="right carousel-control">›</a>
@@ -57,12 +35,12 @@
   </div>
 </div>
 
-
 <script>
   $(document).ready(function() {
   $('#media').carousel({
     pause: true,
     interval: false,
   });
+  $('.left.carousel-control, .right.carousel-control').css('margin-top', ($('.carousel-inner').height()-$('.left.carousel-control').height())/2)
 });
 </script>
