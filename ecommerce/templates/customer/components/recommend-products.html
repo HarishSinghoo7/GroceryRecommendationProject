@@ -6,10 +6,10 @@
           {% for i in range((response.recommends | length)//4 if (response.recommends | length)%4==0 else ((response.recommends | length)//4)+1 ) %}
           <div class="item {{ 'active' if i == 0 }}">
             {% for prod in response.recommends[i*4 : [i*4+4, response.recommends | length] | min] %}
-              {% for product in prod.values() %}
+              {% for prod_id, product in prod.items() %}
                 <div class="col-xl-3 col-lg-3 col-md-6 col-xs-12">
                   <div class="card">
-                    <a href="{{ url_for('products', product_id=product.product_id) }}">
+                    <a href="{{ url_for('products', product_id=prod_id) }}">
                       <img src="{{ product.product_image_path }}" alt="" class="img-responsive">
                       <div class="card-title pl-20 pr-20 pt-5">
                         {{ product.product_name }}
