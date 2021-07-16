@@ -14,6 +14,7 @@ flatbuffers==1.12
 gast==0.4.0
 gTTS==2.0.1
 gTTS-token==1.1.2
+gunicorn==20.1.0
 idna==2.7
 importlib-metadata==4.6.1
 isort==4.3.20
